@@ -1,0 +1,20 @@
+{
+    "n_episodes": 1,
+    "episode_len": 30,
+    "gamma": 0.9,
+    "cs": 15,
+    "nbcuesrange": [
+        4,
+        8
+    ],
+    "triallen": 4,
+    "nbtraintrials": 20,
+    "nbtesttrials": 10,
+    "rew": 1.0,
+    "n_back": 10,
+    "n_pfc": 32,
+    "pfc_learning_rate": 0.001,
+    "n_str": 16,
+    "str_learning_rate": 0.005,
+    "entropy_loss_weight": 0.01
+}

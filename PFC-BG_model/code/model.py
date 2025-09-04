@@ -15,7 +15,11 @@ import torch.nn.functional as F
 from collections import namedtuple
 
 import two_step_task as ts
-import analysis as an
+# Make analysis optional to avoid circular imports when used as a library
+try:
+    import analysis as an
+except Exception:
+    an = None
 
 Episode = namedtuple('Episode', ['states', 'rewards', 'actions', 'pfc_inputs', 'pfc_states', 'pred_states','task_rew_states', 'n_trials'])
 
@@ -56,7 +60,7 @@ class PFC_model (nn.Module):
             h0=torch.zeros(self.num_layers, x.size(0), self.hidden_size)
             out, _=self.rnn(x,h0)
             hidden=out[:,-1,:]
-            out=F.softmax(self.state_pred(hidden))
+            out=F.softmax(self.state_pred(hidden), dim=-1)
             return out, hidden         #Hidden used to get state of RNN layer 
 # Striatum model
 class Str_model(nn.Module):
@@ -87,7 +91,7 @@ def run_simulation(save_dir=None, pm=default_params):
         input_size=(task.n_states+task.n_actions)
         pfc_input_buffer = torch.zeros([pm['n_back'], task.n_states+task.n_actions])
    
-                                                                                          
+                                                                                           
     pfc_model=PFC_model(pm, input_size, task)
     pfc_loss_fn= nn.MSELoss()
     pfc_optimizer=torch.optim.Adam(pfc_model.parameters(), lr=pm['pfc_learning_rate'])
@@ -235,7 +239,8 @@ def run_simulation(save_dir=None, pm=default_params):
         print(f'Episode: {e} Steps: {step_n} Trials: {n_trials} '
               f' Rew. per tr.: {np.sum(rewards)/n_trials :.2f} PFC tr. loss: {tl.item() :.3f}')
         
-        if e % 10 == 9: an.plot_performance(episode_buffer, task)
+        if an is not None and e % 10 == 9:
+            an.plot_performance(episode_buffer, task)
         
     # Save data.    
     
@@ -254,4 +259,3 @@ def run_simulation(save_dir=None, pm=default_params):
             'pfc_optimizer': pfc_optimizer.state_dict(),
             'str_optimizer': str_optimizer.state_dict()
             }, os.path.join(save_dir, PATH))
-        

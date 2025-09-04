@@ -1,0 +1,18 @@
+{
+    "n_episodes": 1,
+    "episode_len": 100,
+    "max_step_per_episode": 600,
+    "gamma": 0.9,
+    "good_prob": 0.8,
+    "block_len": [
+        20,
+        40
+    ],
+    "n_back": 30,
+    "n_pfc": 16,
+    "pfc_learning_rate": 0.01,
+    "pred_rewarded_only": false,
+    "n_str": 10,
+    "str_learning_rate": 0.05,
+    "entropy_loss_weight": 0.05
+}

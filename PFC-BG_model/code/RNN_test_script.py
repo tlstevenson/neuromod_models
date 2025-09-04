@@ -65,7 +65,7 @@ class PFC_model(nn.Module):
         h0=torch.zeros(self.num_layers, x.size(0), self.hidden_size)
         out, _=self.rnn(x,h0)
         hidden=out[:,-1,:]
-        out=F.softmax(self.state_pred(hidden))
+        out=F.softmax(self.state_pred(hidden), dim=-1)
         return out, hidden      # hidden used to get output of rnn layer.                                                                                                         
 model=PFC_model()
 #loss_fn=nn.CrossEntropyLoss()
