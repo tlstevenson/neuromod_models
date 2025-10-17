@@ -120,7 +120,7 @@ def parse_args():
             "bp-on-sr", "blanco-on-sr", "bp_sr", "sr-with-bp", "stimulus-response-with-bp",
             "miconi-on-two-step", "miconi_two_step", "two-step-with-miconi", "two_step_with_miconi",
         ],
-        help="Behavior/task (native or cross-adapted)",
+        help="Behavior/ task (native or cross-adapted)",
     )
     p.add_argument("--episodes", type=int, default=None, help="Number of episodes (overrides defaults)")
     p.add_argument("--save-dir", type=str, default=None, help="Directory to save results (params, episodes, checkpoints)")
